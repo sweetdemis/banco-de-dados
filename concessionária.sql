@@ -68,7 +68,6 @@ INSERT INTO funcionario (codfuncionario, nome, cpf, datanascimento, login, senha
 (007, 'James Bond', 18945678203, to_date('16/05/1953', 'DD/MM/YYYY'), 'bondbond', 'eujamesbond7', 40000, 30),
 (008, 'Anne Hathaway', 94587326045, to_date('12/11/1982', 'DD/MM/YYYY'), 'anneh', 'getreal02', 55000, 28);
 
-
 INSERT INTO cliente (codcliente, nome, cpf, datanascimento, telefone, endereco, email) VALUES
 (101, 'Vânia Tanzânia', 23458510283, to_date('22/12/1987','DD/MM/YYYY'), 977884345, 'rua greenwood, 3454', 'vaniat@gmail.com'),
 (102, 'Romeu Jubileu', 78430935677, to_date('30/01/1990','DD/MM/YYYY'), 981234455, 'irere, 678', 'jubijubi@gmail.com'),
@@ -78,7 +77,6 @@ INSERT INTO cliente (codcliente, nome, cpf, datanascimento, telefone, endereco, 
 (106, 'Rachel Green', 36294628777, to_date('12/01/1980','DD/MM/YYYY'), 978761234, 'central perk, 1000', 'rachelerosshotmail.com'),
 (107, 'Milene Cardoso', 75733290954, to_date('01/10/2004','DD/MM/YYYY'), 99954320, 'Osório, 7777', 'micardoso7@gmail.com'),
 (108, 'Thiago Fritz', 04607128366, to_date('24/09/1996','DD/MM/YYYY'), 97077079, 'sao paolo, 3333', 'fritz@gmail.com');
-
 
 INSERT INTO carro (codCarro, marca, modelo, valor, anoFabricacao) VALUES
 (070, 'Audi', 'R8', 1950000, 2007),
@@ -108,7 +106,6 @@ INSERT INTO carro (codCarro, marca, modelo, valor, anoFabricacao) VALUES
 (094, 'Suzuki', 'Jimny', 122990, 2022),
 (095, 'Jeep', 'Wrangler Rubicon', 459990, 2022);
 
-
 INSERT INTO venda (codCarro, codVenda, anoFabricacao, valorVenda, codFuncionario, codCliente) VALUES 
 (070, 200, 2021, 570000, 001, 101),
 (071, 201, 2020, 56000, 002, 102), 
@@ -119,13 +116,10 @@ INSERT INTO venda (codCarro, codVenda, anoFabricacao, valorVenda, codFuncionario
 INSERT INTO proposta (codproposta, codCarro, codFuncionario, codCliente, valorInicial, valorFinal, dataVenda) VALUES
 (01, 070, 001, 101, 574990, 570000, to_date('22/04/2022', 'DD/MM/YYYY')),
 (02, 071, 002, 102, 60000, 56000, to_date('16/02/2021', 'DD/MM/YYYY')),
-(03, 072, 003, 103, 100000, 96000, to_date('04/09/2022', 'DD/MM/YYYY'))
+(03, 072, 003, 103, 100000, 96000, to_date('04/09/2022', 'DD/MM/YYYY')),
+(04, 090, 001, 108, 68590, 67500, to_date('08/01/2020','DD/MM/YYYY'));
 
 --Uma Consulta que envolva dados de pelo menos duas tabelas;
-SELECT f.nome AS funcionario, p.codproposta AS nro_proposta FROM funcionario f INNER JOIN proposta p
-    ON f.codfuncionario=p.codproposta
-	
---Uma Consulta que envolva dados de pelo menos duas tabelas e que necessite de uma junção externa;
---A descrição dos produtos bem como o número de itens que foram vendidos, ordenado pelo número de itens que foram vendidos.
-
---Uma consulta que envolva dados de pelo menos três trabelas e agrupamento de dados.
+SELECT f.nome, count(codproposta) FROM funcionario f INNER JOIN proposta p
+    ON f.codfuncionario=p.codfuncionario
+    GROUP BY f.nome
