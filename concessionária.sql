@@ -58,10 +58,10 @@ CREATE TABLE proposta (
 	CONSTRAINT "FuncionarioPropostaFK" FOREIGN KEY(codfuncionario) REFERENCES funcionario(codfuncionario),
 	CONSTRAINT "ClientePropostaFK" FOREIGN KEY(codcliente) REFERENCES cliente(codcliente))
 	
-INSERT INTO funcionario (codCliente, nome, cpf, datanascimento, login, senha, salario, cargahoraria) VALUES 
+INSERT INTO funcionario (codfuncionario, nome, cpf, datanascimento, login, senha, salario, cargahoraria) VALUES 
 (001, 'Louis Tomlinson', 28214672911, to_date('24/12/1991','DD/MM/YYYY'), 'aluisio', 'walls28', 56578, 30),
-(002, 'Harry Styles', 5381630923, to_date('01/02/1993','DD/MM/YYYY'), 'harold', 'medicine', 56300, 30),
-(003, 'Niall Horan', 274009123356, to_date('13/09/1993','DD/MM/YYYY'), 'nai', 'azul', 55400, 30),
+(002, 'Harry Styles', 85381630923, to_date('01/02/1993','DD/MM/YYYY'), 'harold', 'medicine', 56300, 30),
+(003, 'Niall Horan', 27400912335, to_date('13/09/1993','DD/MM/YYYY'), 'nai', 'azul', 55400, 30),
 (004, 'Zayn Malik', 46297439222, to_date('12/01/1993','DD/MM/YYYY'), 'zain', 'goodyears', 56120, 32),
 (005, 'Liam Payne', 16382929963, to_date('29/08/1992','DD/MM/YYYY'), 'payno', 'rudehours13', 54700, 29),
 (006, 'Taylor Swift', 13131678771, to_date('13/12/1989','DD/MM/YYYY'), 'taylor', 'august13', 62800, 25),
@@ -81,7 +81,7 @@ INSERT INTO cliente (codcliente, nome, cpf, datanascimento, telefone, endereco, 
 
 
 INSERT INTO carro (codCarro, marca, modelo, valor, anoFabricacao) VALUES
-(070, 'Audi' 'R8', 1950000, 2007),
+(070, 'Audi', 'R8', 1950000, 2007),
 (071, 'Nissan', 'Skyline R34 Gtr', 1200000, 2000),
 (072, 'Nissan', 'Skyline R35 Gtr', 950000, 2007),
 (073, 'Mitsubishi', 'Eclipse', 85900, 1989),
@@ -104,10 +104,9 @@ INSERT INTO carro (codCarro, marca, modelo, valor, anoFabricacao) VALUES
 (090, 'Renault', 'Kwid', 68590, 2017), 
 (091, 'Ford', 'Maverick', 120000, 1970),
 (092, 'Fiat', 'Mobi', 67000, 2016),
-(092, 'Mercedes-Benz', 'Classe A' 160, 23000, 1998),
 (093, 'Jeep', 'Renegade', 100000, 2022),
 (094, 'Suzuki', 'Jimny', 122990, 2022),
-(095, 'Jeep', 'Wrangler Rubicon', 459990, 2022),
+(095, 'Jeep', 'Wrangler Rubicon', 459990, 2022);
 
 
 INSERT INTO venda (codCarro, codVenda, anoFabricacao, valorVenda, codFuncionario, codCliente) VALUES 
@@ -123,18 +122,10 @@ INSERT INTO proposta (codproposta, codCarro, codFuncionario, codCliente, valorIn
 (03, 072, 003, 103, 100000, 96000, to_date('04/09/2022', 'DD/MM/YYYY'))
 
 --Uma Consulta que envolva dados de pelo menos duas tabelas;
-SELECT f.nome AS funcionario, d.nome AS departamento FROM funcionario f INNER JOIN departamento d 
-	ON d.coddepartamento=f.codfuncionario
-	
-SELECT f.nome AS funcionario, v.codvenda AS totalVendas FROM funcionario f INNER JOIN venda v
-	ON v.codvenda=f.codfuncionario
+SELECT f.nome AS funcionario, p.codproposta AS nro_proposta FROM funcionario f INNER JOIN proposta p
+    ON f.codfuncionario=p.codproposta
 	
 --Uma Consulta que envolva dados de pelo menos duas tabelas e que necessite de uma junção externa;
 --A descrição dos produtos bem como o número de itens que foram vendidos, ordenado pelo número de itens que foram vendidos.
-SELECT pr.descricao, v.quantidade FROM produto pr INNER JOIN ItemVenda v 
-ON pr.codProduto=v.codProduto ORDER BY v.codProduto;
-
-select descricao, coalesce(sum(quantidade),0) from produto p left join itemvenda iv 
-	on p.codproduto = iv.codproduto group by p.codproduto;
 
 --Uma consulta que envolva dados de pelo menos três trabelas e agrupamento de dados.
