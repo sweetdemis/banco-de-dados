@@ -257,7 +257,18 @@ SELECT d.nome, 'R$ '||round(coalesce(sum(quantidade*precounitvenda), 0)) as tota
 	RIGHT JOIN departamento d USING (coddepartamento)
 		GROUP BY d.coddepartamento
 	
-
 --i. Sobre os clientes que são funcionários mostrar o nome, o total em vendas realizadas (R$) e o total em compras realizadas (R$)
 --j. O nome e a média em compras (R$) para os clientes que compraram em média acima de R$30 em cada compra.
 --k. Nome do cliente, do funcionário e o total da compra para vendas realizadas no último mês.
+
+--cláusula when
+SELECT count(iv.codproduto) AS qtde_vendida, descricao,
+    CASE
+        WHEN count(*) >10 THEN 'muito vendido'
+        WHEN count(*) >=5  THEN 'vendas normais'
+        WHEN count(*) >=1 THEN 'pouco vendido'
+        WHEN count(*) = 0 THEN 'nunca vendido'
+        END AS vendas
+	FROM produto p INNER JOIN itemvenda iv
+	USING (codproduto) 
+    GROUP BY descricao
