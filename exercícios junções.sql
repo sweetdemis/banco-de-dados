@@ -272,3 +272,16 @@ SELECT count(iv.codproduto) AS qtde_vendida, descricao,
 	FROM produto p INNER JOIN itemvenda iv
 	USING (codproduto) 
     GROUP BY descricao
+
+--exercícios view, transações e índices
+
+--1) Crie uma view que liste os dados de funcionários (nome, cpf, salario, dataNascimento, sexo e nome do departamento)
+CREATE VIEW func_depto AS
+	(SELECT f.nome, f.cpf, f.salario, f.dataNascimento, f.sexo, d.nome AS departamento FROM funcionario f LEFT OUTER JOIN departamento d 
+	ON d.coddepartamento=f.codfuncionario);
+SELECT * FROM func_depto;
+drop view func_depto
+
+--2) Crie uma view que liste os dados de funcionários (nome, cpf, salario, dataNascimento, sexo, nome do departamento e 
+--nome do chefe quando existir)
+SELECT f.nome, f.codChefe FROM funcionario f RIGHT JOIN funcionario c ON c.codFuncionario=f.codChefe
