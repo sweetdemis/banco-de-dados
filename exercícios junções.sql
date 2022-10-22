@@ -282,6 +282,25 @@ CREATE VIEW func_depto AS
 SELECT * FROM func_depto;
 drop view func_depto
 
---2) Crie uma view que liste os dados de funcionários (nome, cpf, salario, dataNascimento, sexo, nome do departamento e 
---nome do chefe quando existir)
-SELECT f.nome, f.codChefe FROM funcionario f RIGHT JOIN funcionario c ON c.codFuncionario=f.codChefe
+--2) Crie uma view que liste os dados de funcionários (nome, cpf, salario, dataNascimento, 
+--sexo, nome do departamento e nome do chefe quando existir)     
+CREATE VIEW func_chefe ("funcionario", "cpf", "salario", "data nascimento", "sexo", "departamento", "chefe") AS
+    (SELECT f.nome, f.cpf, f.salario, f.datanascimento, f.sexo, d.nome, chefe.nome
+    FROM funcionario f LEFT OUTER JOIN departamento d ON f.coddepartamento=d.coddepartamento
+    LEFT OUTER JOIN funcionario chefe ON f.codchefe=chefe.codfuncionario);
+    
+SELECT * FROM func_chefe
+drop view func_chefe
+    
+--3) Crie uma view que liste o número de compras e o total em reais comprado por cada cliente 
+--(o nome e cpf do cliente)
+CREATE VIEW compras ("cliente", "cpf", "codcliente", "numero_compras", "total") AS
+    (SELECT c.nome, c.cpf, c.codcliente, count(iv.codproduto) AS numero_compras,
+	'R$ '||round(coalesce(sum(quantidade*precounitvenda), 0),2) AS total
+	FROM notafiscal nf INNER JOIN itemvenda iv
+		USING (codnotafiscal)
+	RIGHT JOIN cliente c USING (codcliente)
+	GROUP BY c.codcliente)
+    
+SELECT * FROM compras
+drop view compras
