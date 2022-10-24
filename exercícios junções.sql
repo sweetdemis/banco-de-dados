@@ -304,3 +304,34 @@ CREATE VIEW compras ("cliente", "cpf", "codcliente", "numero_compras", "total") 
     
 SELECT * FROM compras
 drop view compras
+
+--4) Faça uma consulta que liste o nome dos funcionários e departamentos. Faça uma view para cada item de listagem pedido:
+--a. Apenas funcionários alocados em um departamento e departamentos com funcionários.
+CREATE VIEW seila ("funcionario", "departamento") AS
+	(SELECT f.nome, d.nome FROM funcionario f 
+					 INNER JOIN departamento d on d.coddepartamento=f.coddepartamento)
+					 
+SELECT * FROM seila
+drop view seila
+
+--b. Todos funcionários e apenas departamentos com funcionários.
+CREATE VIEW louis ("funcionario", "departamento") AS
+	(SELECT f.nome, d.nome FROM funcionario f 
+					 LEFT OUTER JOIN departamento d on d.coddepartamento=f.codfuncionario)
+					 
+SELECT * FROM louis
+drop view louis
+
+-- X c. Apenas funcionários alocados em um departamento e todos os departamentos.
+SELECT f.nome, d.nome FROM funcionario f RIGHT OUTER JOIN departamento d on f.codfuncionario=d.coddepartamento --right?
+
+--d. Todos funcionários e todos departamentos.
+CREATE VIEW taylor ("funcionario", "deparamento") AS
+	(SELECT f.nome, d.nome FROM funcionario f FULL JOIN departamento d ON f.codfuncionario=d.coddepartamento)
+	
+SELECT * FROM taylor
+drop view taylor
+
+--Após criar as views, insira 2 departamentos sem funcionários e 2 funcionários sem vinculo a um departamento e
+--observe as mudanças nas views.
+
