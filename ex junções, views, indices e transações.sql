@@ -317,7 +317,7 @@ drop view seila
 --b. Todos funcionários e apenas departamentos com funcionários.
 CREATE VIEW louis ("funcionario", "departamento") AS
 	(SELECT f.nome, d.nome FROM funcionario f 
-					 LEFT OUTER JOIN departamento d on d.coddepartamento=f.codfuncionario)
+	 LEFT OUTER JOIN departamento d on d.coddepartamento=f.codfuncionario)
 					 
 SELECT * FROM louis
 drop view louis
@@ -335,3 +335,36 @@ drop view taylor
 --Após criar as views, insira 2 departamentos sem funcionários e 2 funcionários sem vinculo a um departamento e
 --observe as mudanças nas views.
 
+--5) O que são índices, qual sua utilidade?
+--é uma estrutura complementar de uma coluna da tabela, ela torna a busca por um elemento da coluna mais eficiente, e
+--é útil para campos que aparecem muitas vezes nas condições de busca.
+
+--6) Considerando a tabela Funcionario, cite uma coluna que é candidata a ter um índice e uma que não deve ter um índice.
+--Após crie o índice para a coluna escolhida.
+--Uma coluna que é candidata pode ser nome (poderia ser codFuncionario, mas as chaves primárias já tem índice); uma coluna 
+--que não é recomendado seria sexo, pois não espalha quase nada.
+CREATE INDEX in_nome ON funcionario(nome)
+DROP INDEX in_nome
+
+--7) Um sistema que utiliza o banco de dados apresentado realiza muitas pesquisas com filtro pela data de emissão de cada
+--nota fiscal, essas consultas têm apresentado certa lentidão. Que solução você propõe para solucionar o problema (informe
+--também o comando SQL para efetivar a solução)?
+--poderia ser criado um indice para a coluna dataVenda da tabela NotaFiscal. O comando para a solução é: 
+CREATE INDEX data_venda ON notafiscal(dataVenda)
+
+--8) Como é feito o controle de transações em Banco de dados, com quais comandos? Explique por que isso é útil.
+--O controle é feito através de comandos de começo, fim e para voltar um estado de ma transação. Eles são:
+BEGIN TRANSACTION; ROLLBACK WORK; COMMIT WORK.
+
+--9) A venda de um conjunto de produtos é considerada uma transação única, ou seja, ou a venda dos produtos é realizada ou
+--não. Crie uma transação que realize a compra dos produtos de código 3 (quantidade 5), 5 (quantidade 3) e 8 (quantidade 2)
+--feita pelo funcionário de código 3 e cliente de código 2.
+BEGIN TRANSACTION
+	INSERT INTO notafiscal (datavenda, codfuncionario, codcliente) VALUES (current_date - interval '30 days', 3, 2);
+	INSERT INTO itemVenda (codnotafiscal, codproduto, quantidade, precoUnitVenda) VALUES (9, 3, 5, 2.80);
+	inset itemvenda
+	inset itemvenda
+	update produto
+	update produto
+	update produto
+COMMIT WORK;
