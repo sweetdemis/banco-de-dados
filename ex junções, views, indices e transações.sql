@@ -192,18 +192,17 @@ INSERT INTO notafiscal (datavenda, codfuncionario, codcliente) VALUES
 INSERT INTO itemVenda (codnotafiscal, codproduto, quantidade, precoUnitVenda) VALUES 
 (10,6,2, 2.80),(10,2,3, 3.10),(10,21,2, 8.49);
 
---a 
+--a O nome dos funcionários e de seus respectivos departamentos
 SELECT f.nome AS funcionario, d.nome AS departamento FROM funcionario f LEFT OUTER JOIN departamento d 
-	ON d.coddepartamento=f.codfuncionario
+	ON d.coddepartamento=f.coddepartamento
 	
---b
+--b Quantas diferentes pessoas (todos seus dados) existem no banco de dados (clientes e funcionários)
 SELECT * FROM funcionario f FULL JOIN cliente c 
 	ON c.codcliente=f.codfuncionario
 
 SELECT * FROM funcionario FULL JOIN cliente USING (cpf, nome)
 
---c
---O item 1.j agrupado por nome do departamento e ordenado pelo nome do departamento para funcionários do
+--c O item 1.j agrupado por nome do departamento e ordenado pelo nome do departamento para funcionários do
 --sexo masculino com salário maior que 2000
 
 --j. A média salarial e o maior e menor salário dos funcionários
@@ -212,11 +211,13 @@ SELECT d.nome, avg(salario) AS media_salarial, min(salario) AS menor_salario, ma
 	WHERE sexo='M' AND salario>=2000
 	GROUP BY d.nome
 	
+	
 --d A descrição dos produtos bem como o número de itens que foram vendidos, ordenado pelo número de itens
 --que foram vendidos.
 SELECT descricao, COALESCE (sum(quantidade), 0) as qtdeVendida FROM produto p LEFT JOIN ITEMVENDA iv
 	ON p.codproduto=iv.codproduto
 	GROUP BY p.codproduto 
+	ORDER BY qtdeVendida desc;
 	
 --e A descrição e número de vezes que cada produto foi vendido, ordenado pelo número de vezes que foi
 --vendido.
